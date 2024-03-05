@@ -1,0 +1,137 @@
+<div>
+    <p-toast></p-toast>
+    <div class="main-container">
+        <div class="checkin-checkout-container">
+        <div class="d-flex flex-column justify-content-center gap-3 pt-5 text-center">
+            <h2 class="align-self-center">CheckIn CheckOut Page</h2>
+            <div class="d-flex justify-content-center">
+                <form [formGroup]="checkDate">
+                    <p-calendar placeholder="Select date for check-in" [maxDate]="maxDateCheckIn" formControlName="checkDate"></p-calendar>
+                </form>
+            </div>
+        </div>
+        <div class="d-flex flex-column">
+            <div class="d-flex justify-content-center align-items-center pt-4"
+                *ngIf="currData!==undefined &&checkDate.value.checkDate!==null && currData!==undefined && currData.date===null">
+                <div class="d-flex flex-column gap-3 checkIn">
+                    <h4>You have not checked-in for the day yet, check-in now?</h4>
+                    <div class="d-flex justify-content-around">
+                        <button class="btn btn-primary" (click)="logAttendance()" >Check In</button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center pt-4">
+                <div *ngIf="currData!==undefined &&currData.checkInTime!==null && currData.checkOutTime==='CheckedIn'">
+                    <div class="d-flex flex-column gap-3 checkIn">
+                        <h4>You have checked in for the day, checkout? or edit checkout</h4>
+                        <div class="d-flex justify-content-around flex-column gap-3 w-100">
+                            <div class="d-flex flex-column align-items-center gap-3">
+                                <div class="form-floating">
+                                    <input type="time" [(ngModel)]="currData.checkInTime" class="form-control"
+                                        id="floatingPassword" placeholder="Password">
+                                    <label for="floatingPassword">Check-in time</label>
+                                </div>
+                                <div class="d-flex  gap-2">
+                                    <button class="btn btn-primary" (click)="modifyCheckIn()">Update Check-in</button>
+                                    <button class="btn btn-danger" (click)="logCheckOut()"><i
+                                            class="pi pi-sign-out pr-2"></i>Check Out</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center pt-4">
+                <div *ngIf="currData!==undefined &&currData.checkInTime!==null && currData.checkOutTime!=='CheckedIn'">
+                    <div class="d-flex flex-column gap-3 checkIn">
+                        <h4>You have checked out for the day! Modify Details?</h4>
+                        <div class="d-flex justify-content-around flex-column gap-3">
+                            <div class="d-flex gap-3 justify-content-center">
+                                <div class="form-floating">
+                                    <input type="time" [(ngModel)]="currData.checkInTime" class="form-control"
+                                        id="floatingPassword" placeholder="Check-in time">
+                                    <label for="floatingPassword">Check-in time</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input type="time" [(ngModel)]="currData.checkOutTime" class="form-control"
+                                        id="floatingPassword" placeholder="Check-out time">
+                                    <label for="floatingPassword">Check-out time</label>
+                                </div>
+                            </div>
+                            <div class="w-100 d-flex justify-content-center">
+                                <button class="btn btn-danger w-55" (click)="modifyCheckIn()">Update Log</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="currData!==undefined && currData.checkInTime==='Apply'">
+                <h4>Your leave request is being processed</h4>
+            </div>
+            <div *ngIf="currData!==undefined && currData.checkInTime==='Leave'">
+                <h3>Leave has approved!</h3>
+            </div>
+            <div class="d-flex justify-content-around">
+                <button class="btn btn-danger" (click)="openLeaveForm()">Apply Leave</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-container">
+        <h3 class="card-title">Leave Counts Left</h3>
+        <div class="card-details">
+            <div class="detail-item d-flex justify-content-between p-2">
+              <span class="detail-label">Casual Leave</span>
+              <span class="detail-value">:&nbsp;{{ userLeaveData.casualLeave }}</span>
+            </div>
+            <div class="detail-item d-flex justify-content-between p-2">
+              <span class="detail-label">Sick Leave</span>
+              <span class="detail-value">:&nbsp;{{ userLeaveData.sickLeave }}</span>
+            </div>
+            <div class="detail-item d-flex justify-content-between p-2">
+              <span class="detail-label">Earned Leave:</span>
+              <span class="detail-value">:&nbsp;{{ userLeaveData.earnedLeave }}</span>
+            </div>
+            <div class="detail-item d-flex justify-content-between p-2">
+              <span class="detail-label">Total Leaves Left:</span>
+              <span class="detail-value">:&nbsp;{{userLeaveData.casualLeave+userLeaveData.sickLeave+ userLeaveData.earnedLeave }}</span>
+            </div>
+        </div>
+        
+    </div>
+    </div>
+    <p-dialog [(visible)]="leaveForm" [style]="{width:'450px', height:'70vh'}" header="Leave Form" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div class="field">
+                <label for="inventoryStatus">Leave Type</label>
+                <p-dropdown [(ngModel)]="leaveFormData.leaveType" inputId="leaveType" [options]="leaveType">
+                    <ng-template pTemplate="selectedItem">
+                        <p-tag [value]="leaveFormData.leaveType.toUpperCase()" [severity]="getSeverity(leaveFormData.leaveType.toUpperCase())"></p-tag>
+                    </ng-template>
+                    <ng-template let-option pTemplate="item">
+                        <p-tag [value]="option.label" [severity]="getSeverity(option.label)"></p-tag>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="field">
+                <label for="startDate">Start Date</label>
+                <p-calendar class="formCalender" p-calendar-w-btn placeholder="Start date" formControlName="leaveFrom" [styleClass]="'custom-height'" [inputStyle]="{'width':'10px'}"></p-calendar>
+                <!-- <small class="p-error" *ngIf="submitted && !leaveFormData.leaveFrom">From date is required.</small> -->
+            </div>
+            <div class="field">
+                <label for="toDate">User Name</label>
+                <div style="height: 20px;">
+                <p-calendar class="formCalender" styleClass="formCalender" placeholder="Start date" formControlName="leaveFrom"></p-calendar>
+                </div>
+                <!-- <small class="p-error" *ngIf="submitted && !leaveFormData.leaveTo">To Date is required.</small> -->
+            </div>
+            <div class="field pt-5">
+                <label for="description">Description</label>
+                <textarea id="description" pInputTextarea [(ngModel)]="leaveFormData.reason" required rows="2" cols="20"></textarea>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="applyForLeave()"></button>
+        </ng-template>
+    </p-dialog>
+</div>

@@ -1,0 +1,138 @@
+@import "~primeng/resources/primeng.min.css";
+.checkIn{
+    // width: 40vw;
+    text-align: center;
+}
+
+.main-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 87vh;
+  flex-direction: row-reverse;
+}
+
+.checkin-checkout-container {
+  width: 450px;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+input[type="time"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    width: 200px;
+  }
+
+  .label-position{
+    position: relative;
+  left: -100px; /* Adjust the value as needed */
+  margin-right: 10px; 
+  }
+
+  .card-container {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 15px;
+    max-width: 300px;
+    // margin: 0 auto;
+    // margin-left: 10%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  .card-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .card-details {
+    display: flex;
+    font-size: 18px;
+    flex-direction: column;
+  }
+  
+  .detail-item {
+    margin-bottom: 5px;
+  }
+
+
+  // :host ::ng-deep .p-datepicker {
+  //   font-size: 12px; /* Adjust the font-size as desired */
+  //   width: 10px; /* Adjust the width as desired */
+  //   height: 20px;
+  // }
+
+  .formCalender{
+    ::ng-deep .p-datepicker table td {
+      padding: 0.1rem !important;
+    }
+    
+    ::ng-deep .p-datepicker table td > span {
+      width: 0.7rem;
+      height: 0.7rem;
+    }
+    
+    ::ng-deep .p-datepicker table {
+      font-size: 7pt;
+      margin: -0.143rem 0;
+    }
+    
+    ::ng-deep .p-datepicker .p-datepicker-header {
+      padding: 0.1rem;
+    }
+    // width: 100px;
+  }
+  // .p-calendar .p-datepicker{
+  //   min-width: none !important;
+  //   min-width: 30px !important;
+  // }
+  // .p-datepicker .p-datepicker-calendar-container {
+  //   width: 10px; /* Adjust the width as desired */
+  //   height: 10px; /* Adjust the height as desired */
+  // }
+  
+  // .p-datepicker .p-datepicker-calendar {
+  //   width: 10%;
+  //   height: 10%;
+  // }
+
+  // .p-calendar{
+  //   width: 400px !important;
+  // }
+
+  // .p-datepicker{
+  //   width: 400px !important;
+  // }
+  // :host .p-inputwrapper .p-datepicker .p-datepicker-calendar {
+  //   min-width: unset !important;
+  // }
+  ::ng-deep .p-datepicker table td {
+    padding: 2px; // Adjust as per your requirement
+  }
+  body .p-datepicker table td {
+    padding: 2px; // Adjust as per your requirement
+  }
+  :host ::ng-deep .p-inputtextarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  :host ::ng-deep .p-inputtextarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }

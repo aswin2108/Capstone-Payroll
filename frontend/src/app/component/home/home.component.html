@@ -1,0 +1,59 @@
+<div class="homepage--container d-flex flex-column justify-content-center gap-5 align-items-center" [ngClass]="{'HR-display': userService.role === 'HR'}">
+    <div class="d-flex justify-content-around cardRow--container" >
+        <a routerLink="/dashboard" class="card--container--link">
+            <div class="home--card--container border6 d-flex align-items-center justify-content-center">
+                <div class="p-3 d-flex flex-column card--title">
+                    <i class="pi pi-th-large color6 h1 d-flex "></i>
+                    <h3 class="color6">Dashboard</h3>
+                </div>
+            </div>
+        </a>
+        
+        <a routerLink="/salary" class="card--container--link" [ngClass]="{'empHome':'userService.role===Employee'}">
+            <div class="home--card--container border2 d-flex align-items-center justify-content-center">
+                <div class=" d-flex flex-column card--title ">
+                    <i class="pi pi-dollar color2 h1 d-flex "></i>
+                    <h3 class="color2">Salary</h3>
+                </div>
+            </div>
+        </a>
+        <a routerLink="/checkin" class="card--container--link" [ngClass]="{'empHome':'userService.role===Employee'}">
+            <div class="home--card--container border3 d-flex align-items-center justify-content-center">
+                <div class="p-3 d-flex flex-column card--title">
+                    <i class="pi pi-check-circle color3 h1 d-flex "></i>
+                    <h3 class="color3">Check In</h3>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    
+    <div class="d-flex justify-content-around cardRow--container" *ngIf="userService.role !=='Employee'">
+        <a routerLink="/manageEmployees" class="card--container--link" >
+            <div class="home--card--container border1 d-flex align-items-center justify-content-center">
+                <div class="p-3 d-flex flex-column card--title">
+                    <i class="pi pi-users color1 h1 d-flex "></i>
+                    <h3 class="color1">Manage</h3>
+                </div>
+            </div>
+        </a>
+        <a routerLink="/manageEmployees" class="card--container--link" *ngIf="userService.role !=='HR'">
+            <div class="home--card--container border4 d-flex align-items-center justify-content-center">
+                <div class="p-3 d-flex flex-column card--title">
+                    <i class="pi pi-chart-line color4 h1 d-flex "></i>
+                    <h3 class="color4">Analysis</h3>
+                </div>
+            </div>
+        </a>
+        <a routerLink="salary" class="card--container--link" *ngIf="userService.role !=='HR'">
+            <div class="home--card--container border5 d-flex align-items-center justify-content-center">
+                <div class="p-3 d-flex flex-column card--title">
+                    <i class="pi pi-book color5 h1 d-flex "></i>
+                    <h3 class="color5">Audit</h3>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+</div>
