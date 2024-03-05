@@ -1,0 +1,445 @@
+[
+  {
+    "ContainingType": "PayRollProject.Controllers.AuthCredController",
+    "Method": "InsertUser",
+    "RelativePath": "api/AuthCred/createUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newUser",
+        "Type": "PayRollProject.Models.NewAuth",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.AuthCredController",
+    "Method": "GetUserDetails",
+    "RelativePath": "api/AuthCred/tryLogging",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginData",
+        "Type": "PayRollProject.Models.LoginData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.EmployeeLogController",
+    "Method": "GetAttendanceByDateAndUserName",
+    "RelativePath": "api/EmployeeLog/{UserName}/{Date}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Date",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.EmployeeLogController",
+    "Method": "InsertAttendance",
+    "RelativePath": "api/EmployeeLog/{UserName}/{date}/{CheckInTime}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "CheckInTime",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "date",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.EmployeeLogController",
+    "Method": "UpdateAttendance",
+    "RelativePath": "api/EmployeeLog/updateCheckTime",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Attendance",
+        "Type": "PayRollProject.Models.EmployeeLog",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.JobController",
+    "Method": "ScheduleSalaryCrediting",
+    "RelativePath": "api/Job/ScheduleSalaryCrediting",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.LeaveController",
+    "Method": "GetLeaveDetails",
+    "RelativePath": "api/Leave/{UserName}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.LeaveController",
+    "Method": "CreateLeaveDetails",
+    "RelativePath": "api/Leave/addLeave",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "leaveDetails",
+        "Type": "PayRollProject.Models.LeaveDetails",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.LeaveController",
+    "Method": "UpdateLeaveDetails",
+    "RelativePath": "api/Leave/updateLeave/UserName",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "leaveDetails",
+        "Type": "PayRollProject.Models.LeaveDetails",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.LeaveRecordsController",
+    "Method": "GetUserApprovedLeaveRequests",
+    "RelativePath": "api/LeaveRecords/approvedLeaves",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.LeaveRecordsController",
+    "Method": "ApproveLeaveRequest",
+    "RelativePath": "api/LeaveRecords/approveLeave",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.LeaveRecordsController",
+    "Method": "SubmitLeaveRequest",
+    "RelativePath": "api/LeaveRecords/leaveSubmission",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "leaveRecord",
+        "Type": "PayRollProject.Models.LeaveRecord",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.LeaveRecordsController",
+    "Method": "DeleteLeaveRequest",
+    "RelativePath": "api/LeaveRecords/rejectLeave",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.LeaveRecordsController",
+    "Method": "GetUnapprovedLeaveRequests",
+    "RelativePath": "api/LeaveRecords/unapprovedLeave",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.SalaryCreditControler",
+    "Method": "GetCreditTaxDetailsByUserName",
+    "RelativePath": "api/SalaryCreditControler/creditDetails/{UserName}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.SalaryCreditControler",
+    "Method": "InsertCreditTaxDetails",
+    "RelativePath": "api/SalaryCreditControler/salaryCredit/update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "creditDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "creditAmount",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "taxCut",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "transactionId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.UsersController",
+    "Method": "UpdateUserBonus",
+    "RelativePath": "api/Users/{UserName}/Bonus",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "Bonus",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.UsersController",
+    "Method": "UpdateUserNextPayDate",
+    "RelativePath": "api/Users/{UserName}/newNextPayDate",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "newNextPayDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.UsersController",
+    "Method": "InsertUserDetails",
+    "RelativePath": "api/Users/add-user-details",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user",
+        "Type": "PayRollProject.Models.UserDetails",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.UsersController",
+    "Method": "GetUsersDetails",
+    "RelativePath": "api/Users/allUsers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.UsersController",
+    "Method": "GetUsersByDate",
+    "RelativePath": "api/Users/byDate",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.UsersController",
+    "Method": "DeleteUserByUserName",
+    "RelativePath": "api/Users/user/delete",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.UsersController",
+    "Method": "UpdateOvertimeToZero",
+    "RelativePath": "api/Users/user/overTimeAndBonusZero",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.UsersController",
+    "Method": "UpdateUserDetails",
+    "RelativePath": "api/Users/userDetails/edit",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user",
+        "Type": "PayRollProject.Models.UserDetails",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.UsersController",
+    "Method": "GetUserByUserName",
+    "RelativePath": "api/Users/UserName/{UserName}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.UsersController",
+    "Method": "UpdateUserExcemptionAmtAndTaxPercent",
+    "RelativePath": "api/Users/UserName/newExcemptionAmt/newTaxPercent",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user",
+        "Type": "PayRollProject.Models.UserDetails",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
