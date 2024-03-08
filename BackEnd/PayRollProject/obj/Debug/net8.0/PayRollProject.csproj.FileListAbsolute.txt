@@ -132,3 +132,7 @@ C:\Users\ASSHAIL\Documents\angular\Payroll-back\Payroll-Backend\PayRollProject\o
 C:\Users\ASSHAIL\Documents\angular\Payroll-back\Payroll-Backend\PayRollProject\obj\Debug\net8.0\PayRollProject.pdb
 C:\Users\ASSHAIL\Documents\angular\Payroll-back\Payroll-Backend\PayRollProject\obj\Debug\net8.0\PayRollProject.genruntimeconfig.cache
 C:\Users\ASSHAIL\Documents\angular\Payroll-back\Payroll-Backend\PayRollProject\obj\Debug\net8.0\ref\PayRollProject.dll
+C:\Users\ASSHAIL\Documents\angular\Payroll-back\Payroll-Backend\PayRollProject\bin\Debug\net8.0\FubarCoder.RestSharp.Portable.Core.dll
+C:\Users\ASSHAIL\Documents\angular\Payroll-back\Payroll-Backend\PayRollProject\bin\Debug\net8.0\FubarCoder.RestSharp.Portable.HttpClient.dll
+C:\Users\ASSHAIL\Documents\angular\Payroll-back\Payroll-Backend\PayRollProject\bin\Debug\net8.0\JsonSubTypes.dll
+C:\Users\ASSHAIL\Documents\angular\Payroll-back\Payroll-Backend\PayRollProject\bin\Debug\net8.0\sib_api_v3_sdk.dll

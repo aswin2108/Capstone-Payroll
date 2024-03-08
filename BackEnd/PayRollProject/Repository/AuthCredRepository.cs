@@ -43,6 +43,30 @@ namespace PayRollProject.Repository
             return authCred;
         }
 
+        public void DeleteUserDetails(string UserName)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(cstr))  // Replace cstr with your actual connection string
+                {
+                    string query = @"DELETE FROM AuthCredentials 
+                             WHERE UserName = @UserName";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserName", UserName);
+                        connection.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());  
+                                                   
+            }
+        }
+
         public void InsertUser(AuthCred authCred)
         {
 

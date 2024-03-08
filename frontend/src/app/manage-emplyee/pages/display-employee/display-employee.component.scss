@@ -58,3 +58,25 @@
   .table-cells td {
     text-align: center;
   }
+
+  
+  .formCalender{
+    ::ng-deep .p-datepicker table td {
+      padding: 0.1rem !important;
+    }
+    
+    ::ng-deep .p-datepicker table td > span {
+      width: 0.7rem;
+      height: 0.7rem;
+    }
+    
+    ::ng-deep .p-datepicker table {
+      font-size: 7pt;
+      margin: -0.143rem 0;
+    }
+    
+    ::ng-deep .p-datepicker .p-datepicker-header {
+      padding: 0.1rem;
+    }
+    // width: 100px;
+  }

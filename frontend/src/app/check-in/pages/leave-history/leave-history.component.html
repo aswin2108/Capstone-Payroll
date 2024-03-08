@@ -1,0 +1,33 @@
+<div class="card p-3">
+    <p-table [value]="allLeaveApplications" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="caption">
+            <div class="d-flex justify-content-between">
+                <h3>Leave Applications History</h3>
+                <p-button icon="pi pi-refresh" (click)="fetchLeaveHistory()"></p-button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center">From</th>
+                <th class="text-center">To</th>
+                <th class="text-center">Leave Type</th>
+                <th class="text-center">Reason</th>
+                <th class="text-center">Status</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-application>
+            <tr>
+                <td class="text-center">{{application.leaveFrom}}</td>
+                <td class="text-center">{{application.leaveTo}}</td>
+                <td class="text-center">{{application.leaveType===1?'CASUAL':application.leaveType===2?'SICK':'Earned'}}</td>
+                <td class="text-center"><div class="applicationReason">{{application.reason}}</div></td>
+                <td class="text-center"><p-tag [value]="application.flag===0?'UNAPPROVED':application.flag===1?'APPROVED':'REJECTED'" [severity]="getSeverity(application.flag)"></p-tag></td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                 {{allLeaveApplications ? allLeaveApplications.length : 0 }} Applications were submitted in the past.
+            </div>
+        </ng-template>
+    </p-table>
+</div>

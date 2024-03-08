@@ -12,16 +12,21 @@ import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { NotFoundComponent } from './component/not-found/not-found.component';
+import { DockModule } from 'primeng/dock';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, NavbarComponent],
+  declarations: [AppComponent, HomeComponent, NavbarComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
     MenubarModule,
-    ButtonModule
+    ButtonModule,
+    NgxSpinnerModule,
+    DockModule
   ],
   providers: [
     {

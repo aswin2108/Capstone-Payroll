@@ -7,6 +7,10 @@ using System.Net;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using sib_api_v3_sdk.Api;
+using sib_api_v3_sdk.Model;
+using System.Diagnostics;
+using sib_api_v3_sdk.Client;
 
 namespace PayRollProject.Services
 {
@@ -20,7 +24,7 @@ namespace PayRollProject.Services
            // string currentDate_Formatted = currentDate.ToString("yyyy-MM-dd");
             //Console.WriteLine(currentDate);
 
-            DateTime currentDate = DateTime.Today;
+            DateTime currentDate = DateTime.Now;
             //string formattedDate = currentDate.ToString("yyyy-MM-dd");
             //DateOnly parsedDate = DateTime.ParseExact(formattedDate, "dd-MM-yyyy", CultureInfo.InvariantCulture);
             List<UserDetails> employees = userService.GetEmployeesToCreditSalaries(currentDate, userRepository);
@@ -39,10 +43,27 @@ namespace PayRollProject.Services
                 decimal creditedAmount = (employee.Salary-taxAmt);
                 string transactionId = GenerateTransactionId();
                 Console.Write(transactionId);
-                salaryCreditService.InsertCreditAndTaxDetails(employee.UserName, currentDate, creditedAmount, taxAmt, salaryCreditRepository, transactionId);
-                userService.UpdateOvertimeToZero(employee.UserName);
+                salaryCreditService.InsertCreditAndTaxDetails(employee.UserName, currentDate, creditedAmount, taxAmt, salaryCreditRepository, transactionId, employee.ExcemptionAmt,employee.Bonus, employee.OverTime);
+                userService.UpdateOvertimeToZeroJobs(employee.UserName, userRepository);
 
-                SendEmail("aswins2108@gmail.com", "test1", "Sal credited, how is it....?");
+                string senderEmail = "quixar@mail.com";
+                string senderName = "Quixar";
+                string subject = "Salary Credited";
+                 string message = "Dear Employee,\r\n\r\nWe are pleased to inform you that your salary has been successfully credited to your bank account.\r\n\r\nContact our HR department if you have any questions or concerns.\r\n\r\nThank you for your hard work and dedication. We appreciate your contributions to our organization.\r\n\r\nBest regards, Quixar";
+              //  string message = $@"Dear Employee,
+
+               //   We are pleased to inform you that your salary has been successfully credited to your bank account.
+
+               //   Contact our HR department if you have any questions or concerns.
+
+                 // Thank you for your hard work and dedication. We appreciate your contributions to our organization.
+
+              //    Best regards,
+             //     Quixar";
+
+                SendEmail(senderEmail, senderName, employee.Email,employee.FirstName+employee.LastName, subject, message);
+
+                //SendEmail("aswins2108@gmail.com", "test1", "Sal credited, how is it....?");
                 // Increment the salary credit date for the employee to the next possible one
                 // userService.IncrementSalaryCreditDate(employee);
 
@@ -51,37 +72,33 @@ namespace PayRollProject.Services
             }
         }
 
-        public static void SendEmail(string recipientEmail, string subject, string body)
+        public static void SendEmail(string senderEmail, string senderName, string recieverMail, string recieverName, string subject, string message)
         {
-            MailMessage message = new MailMessage();
-            SmtpClient smtpClient = new SmtpClient();
+            var apiInstance = new TransactionalEmailsApi();
+
+            SendSmtpEmailSender sender = new SendSmtpEmailSender(senderName, senderEmail);
+
+            SendSmtpEmailTo reciever1 = new SendSmtpEmailTo(recieverMail, recieverName);
+            List<SendSmtpEmailTo> To = new List<SendSmtpEmailTo>();
+            To.Add(reciever1);
+
+            string HtmlContent = null;
+            string TextContent = message;
+            //string Subject = "My {{params.subject}}";
 
             try
             {
-                // Set the sender's email address
-                message.From = new MailAddress("sender@example.com");
-                // Set the recipient's email address
-                message.To.Add(new MailAddress(recipientEmail));
+                var sendSmtpEmail = new SendSmtpEmail(sender, To, null, null, HtmlContent, TextContent, subject);
+                CreateSmtpEmail result = apiInstance.SendTransacEmail(sendSmtpEmail);
 
-                // Set the email subject and body
-                message.Subject = subject;
-                message.Body = body;
+                Console.WriteLine("Brevo response: " + result.ToJson());
 
-                // Configure the SMTP client
-                smtpClient.Host = "smtp.example.com";
-                smtpClient.Port = 587; // Use the appropriate SMTP port
-                smtpClient.EnableSsl = true;
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential("username", "password");
-
-                // Send the email
-                smtpClient.Send(message);
             }
-            finally
+            catch (Exception e)
             {
-                // Dispose of resources
-                message.Dispose();
-                smtpClient.Dispose();
+                Debug.WriteLine("We have an exception: " + e.Message);
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
             }
         }
 

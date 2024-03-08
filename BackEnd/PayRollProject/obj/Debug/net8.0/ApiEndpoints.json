@@ -1,5 +1,31 @@
 [
   {
+    "ContainingType": "PayRollProject.Controllers.AuditController",
+    "Method": "GetAllAuditDetails",
+    "RelativePath": "api/Audit/audit",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.AuditController",
+    "Method": "CreateAuditRecord",
+    "RelativePath": "api/Audit/createAudit",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "audit",
+        "Type": "PayRollProject.Models.Audit",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "PayRollProject.Controllers.AuthCredController",
     "Method": "InsertUser",
     "RelativePath": "api/AuthCred/createUser",
@@ -10,6 +36,22 @@
       {
         "Name": "newUser",
         "Type": "PayRollProject.Models.NewAuth",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PayRollProject.Controllers.AuthCredController",
+    "Method": "DeleteUserDetails",
+    "RelativePath": "api/AuthCred/deleteAuth/{UserName}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserName",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -155,7 +197,7 @@
   {
     "ContainingType": "PayRollProject.Controllers.LeaveRecordsController",
     "Method": "GetUserApprovedLeaveRequests",
-    "RelativePath": "api/LeaveRecords/approvedLeaves",
+    "RelativePath": "api/LeaveRecords/approvedLeaves/{UserName}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -163,7 +205,7 @@
       {
         "Name": "UserName",
         "Type": "System.String",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -171,7 +213,7 @@
   {
     "ContainingType": "PayRollProject.Controllers.LeaveRecordsController",
     "Method": "ApproveLeaveRequest",
-    "RelativePath": "api/LeaveRecords/approveLeave",
+    "RelativePath": "api/LeaveRecords/approveLeave/{UserName}/{FromDate}/{Flag}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -179,7 +221,17 @@
       {
         "Name": "UserName",
         "Type": "System.String",
-        "IsRequired": false
+        "IsRequired": true
+      },
+      {
+        "Name": "FromDate",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "Flag",
+        "Type": "System.Int32",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -219,11 +271,17 @@
   {
     "ContainingType": "PayRollProject.Controllers.LeaveRecordsController",
     "Method": "GetUnapprovedLeaveRequests",
-    "RelativePath": "api/LeaveRecords/unapprovedLeave",
+    "RelativePath": "api/LeaveRecords/unapprovedLeave/{empType}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "empType",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -273,6 +331,21 @@
       {
         "Name": "transactionId",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ExcemptionAmt",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Bonus",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "OverTime",
+        "Type": "System.Int32",
         "IsRequired": false
       }
     ],

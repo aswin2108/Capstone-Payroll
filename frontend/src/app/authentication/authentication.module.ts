@@ -9,7 +9,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
-import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({

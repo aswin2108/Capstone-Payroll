@@ -12,7 +12,8 @@ children:[
   },
   {
     path:'login',
-    component:LoginComponent
+    component:LoginComponent,
+    // canActivate: [AuthGuardLogin]
   }
 ] }];
 

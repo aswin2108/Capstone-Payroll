@@ -37,9 +37,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
-
-
   fetchProfile(){
     this.profileService.fetchDashboardData().subscribe({
       next:(response)=>{
@@ -71,8 +68,12 @@ export class ProfileComponent implements OnInit {
         });
       },
       error:(error:HttpErrorResponse)=>{
-        console.log(error);
-        
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Successful',
+          detail: 'Data update',
+          life: 3000,
+        });
       }
     })
     

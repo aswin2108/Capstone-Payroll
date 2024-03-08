@@ -18,7 +18,7 @@ namespace PayRollProject.Controllers
         }
 
         [HttpGet("{UserName}")]
-        //[Authorize(Policy = "AdminHrEmployee")]
+        [Authorize(Roles = "Employee, HR, Admin")]
         public IActionResult GetLeaveDetails(string UserName)
         {
             LeaveDetails userLeave = _leaveDetailsService.GetLeaveDetails(UserName);
@@ -27,7 +27,7 @@ namespace PayRollProject.Controllers
         }
 
         [HttpPost("addLeave")]
-        [Authorize(Policy = "AdminHrEmployee")]
+        [Authorize(Roles = "Employee, HR, Admin")]
         public IActionResult CreateLeaveDetails([FromBody] LeaveDetails leaveDetails)
         {
             _leaveDetailsService.CreateLeaveDetails(leaveDetails);
@@ -36,7 +36,7 @@ namespace PayRollProject.Controllers
         }
 
         [HttpPut("updateLeave/UserName")]
-        [Authorize(Policy = "AdminHrEmployee")]
+        [Authorize(Roles = "Admin, HR")]
         public IActionResult UpdateLeaveDetails([FromBody] LeaveDetails leaveDetails)
         {
             // Get the existing leave details for the specified user from the database

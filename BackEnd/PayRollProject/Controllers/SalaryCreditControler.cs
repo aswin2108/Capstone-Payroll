@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PayRollProject.Models;
 using PayRollProject.Services;
@@ -16,12 +17,13 @@ namespace PayRollProject.Controllers
         }
 
         [HttpPost("salaryCredit/update")]
-        public IActionResult InsertCreditTaxDetails(string userName, DateTime creditDate, decimal creditAmount, decimal taxCut, string transactionId) 
+        public IActionResult InsertCreditTaxDetails(string userName, DateTime creditDate, decimal creditAmount, decimal taxCut, string transactionId, int ExcemptionAmt, int Bonus, int OverTime) 
         {
-            _salaryCreditService.InsertCreditTaxDetails(userName, creditDate, creditAmount, taxCut, transactionId);
+            _salaryCreditService.InsertCreditTaxDetails(userName, creditDate, creditAmount, taxCut, transactionId, ExcemptionAmt, Bonus, OverTime);
             return Ok();
         }
 
+        [Authorize(Roles = "Admin, HR, Employee")]
         [HttpGet("creditDetails/{UserName}")]
         public IActionResult GetCreditTaxDetailsByUserName(string UserName)
         {

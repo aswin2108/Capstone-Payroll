@@ -11,17 +11,17 @@ namespace PayRollProject.Services
         {
             _salaryCreditRepository = salaryCreditRepository;
         }
-        public void InsertCreditTaxDetails(string userName, DateTime creditDate, decimal creditAmount, decimal taxCut, string TransactionId)
+        public void InsertCreditTaxDetails(string userName, DateTime creditDate, decimal creditAmount, decimal taxCut, string TransactionId, int ExcemptionAmt, int Bonus, int OverTime)
         {
-            _salaryCreditRepository.InsertCreditTaxDetails(userName, creditDate, creditAmount, taxCut, TransactionId); 
+            _salaryCreditRepository.InsertCreditTaxDetails(userName, creditDate, creditAmount, taxCut, TransactionId, ExcemptionAmt, Bonus, OverTime); 
         }
         public List<SalaryCredit> GetCreditTaxDetailsByUserName(string userName)
         {
             return _salaryCreditRepository.GetCreditTaxDetailsByUserName(userName);
         }
-        public void InsertCreditAndTaxDetails(string userName, DateTime creditDate, decimal creditAmount, decimal taxCut, SalaryCreditRepository salaryCreditRepository, string TransactionId)
+        public void InsertCreditAndTaxDetails(string userName, DateTime creditDate, decimal creditAmount, decimal taxCut, SalaryCreditRepository salaryCreditRepository, string TransactionId, int ExcemptionAmt, int Bonus, int OverTime)
         {
-            salaryCreditRepository.InsertCreditTaxDetails(userName, creditDate, creditAmount, taxCut, TransactionId);
+            salaryCreditRepository.InsertCreditTaxDetails(userName, creditDate, creditAmount, taxCut, TransactionId, ExcemptionAmt, Bonus, OverTime);
         }
     }
 }

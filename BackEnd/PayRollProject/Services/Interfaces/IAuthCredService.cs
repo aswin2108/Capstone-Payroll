@@ -10,5 +10,7 @@ namespace PayRollProject.Services.Interfaces
         public Boolean ValidatePassword(AuthCred currentUser, string Password);
         public string JWTTokenGenerator(string UserName, int roleType);
         public string InsertUser(string UserName, string Password, int Role);
+        public bool UserExist(string UserName);
+        public void DeleteUserDetails(string UserName);
     }
 }

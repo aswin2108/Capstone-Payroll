@@ -7,14 +7,14 @@ namespace PayRollProject.Repository
     public class SalaryCreditRepository : ISalaryCreditRepository
     {
         public string cstr = @"Data Source=APINP-ELPTHQFI5\SQLEXPRESS;Initial Catalog=capstone;User ID=tap2023;Password=tap2023;Encrypt=False";
-        public void InsertCreditTaxDetails(string userName, DateTime creditDate, decimal creditAmount, decimal taxCut, string transactionId)
+        public void InsertCreditTaxDetails(string userName, DateTime creditDate, decimal creditAmount, decimal taxCut, string transactionId, int excemptionAmt, int bonus, int overTime)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(cstr))
                 {
-                    string query = @"INSERT INTO CreditTaxDetails (UserName, CreditDate, CreditAmount, TaxCut, TransactionId)
-                             VALUES (@UserName, @CreditDate, @CreditAmount, @TaxCut, @TransactionId)";
+                    string query = @"INSERT INTO CreditTaxDetails (UserName, CreditDate, CreditAmount, TaxCut, TransactionId, ExcemptionAmt, Bonus, OverTime)
+                             VALUES (@UserName, @CreditDate, @CreditAmount, @TaxCut, @TransactionId, @ExcemptionAmt, @Bonus, @OverTime)";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@UserName", userName);
@@ -22,6 +22,9 @@ namespace PayRollProject.Repository
                         command.Parameters.AddWithValue("@CreditAmount", creditAmount);
                         command.Parameters.AddWithValue("@TaxCut", taxCut);
                         command.Parameters.AddWithValue("@TransactionId", transactionId);
+                        command.Parameters.AddWithValue("@ExcemptionAmt", excemptionAmt);
+                        command.Parameters.AddWithValue("@Bonus", bonus);
+                        command.Parameters.AddWithValue("@OverTime", overTime);
                         connection.Open();
                         command.ExecuteNonQuery();
                     }
@@ -55,6 +58,9 @@ namespace PayRollProject.Repository
                             user.CreditAmount = Convert.ToDecimal(reader["CreditAmount"]);
                             user.TaxCut = Convert.ToDecimal(reader["TaxCut"]);
                             user.TransactionId = reader["TransactionId"].ToString();
+                            user.ExcemptionAmt = Convert.ToInt32(reader["ExcemptionAmt"]); ;
+                            user.Bonus = Convert.ToInt32(reader["Bonus"]); ;
+                            user.OverTime = Convert.ToInt32(reader["OverTime"]); ;
                             creditUsers.Add(user);
                         }
                     }

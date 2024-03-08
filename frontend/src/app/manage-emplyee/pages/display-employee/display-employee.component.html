@@ -5,13 +5,13 @@
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success m-xl-2"
                 (click)="openNew()"></button>
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
+            <button *ngIf="userService.role==='Admin'" pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
                 (click)="deleteSelectedData()" [disabled]="!selectedEmployes || !selectedEmployes.length"></button>
         </ng-template>
 
         <ng-template pTemplate="center"><h1 class="manageTable--TitleFont">Employee Details</h1></ng-template>
 
-        <ng-template pTemplate="right">
+        <ng-template pTemplate="right" *ngIf="userService.role==='Admin'">
             <div class="field m-xl-2 ">
                 <div class="file-upload-button">
                   <label for="fileInput" class="gap-2 file-upload--container">
@@ -40,16 +40,16 @@
 
         <ng-template pTemplate="header">
             <tr class="table-header">
-                <th style="width: 4rem">
+                <th style="width: 4rem" *ngIf="userService.role==='Admin'">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th pSortableColumn="firstName" style="min-width:5rem">Name<p-sortIcon
+                <th pSortableColumn="firstName" class="d-flex" style="min-width:5rem"><div class="d-flex flex-column"><p class="m-0">Full Name</p><p class="m-0 muted-text">UserName</p></div><p-sortIcon
                         field="firstName"></p-sortIcon></th>
-                <th style="min-width:5rem;">Communication</th>
+                <th style="min-width:5rem;"><div class="d-flex flex-column"><p class="m-0">Email</p><p class="m-0 muted-text">Phone</p></div></th>
                 <!-- <th style="min-width:5rem;">Email</th>
                 <th style="min-width:5rem;">Phone.No</th> -->
                 <!-- <th pSortableColumn="age" style="min-width:5rem;">Age<p-sortIcon field="age"></p-sortIcon></th> -->
-                <th style="min-width:5rem;">DOB</th>
+                <th style="min-width:5rem;"><div class="d-flex flex-column"><p class="m-0">DOB</p><p class="m-0 muted-text">Age</p></div></th>
                 <th style="min-width:5rem;">Acc.No</th>
                 <th pSortableColumn="salary" style="min-width:5rem; ">salary <p-sortIcon field="salary"></p-sortIcon></th>
                 <th style="min-width:5rem;">Next salary Date</th>
@@ -60,7 +60,7 @@
 
         <ng-template pTemplate="body" let-emp>
             <tr class="table-cells">
-                <td>
+                <td *ngIf="userService.role==='Admin'">
                     <p-tableCheckbox [value]="emp"></p-tableCheckbox>
                 </td>
                 <!-- <td>{{ emp.userName }}</td> -->
@@ -148,12 +148,12 @@
         </div>
         <div class="field">
             <label for="name">dob</label>
-            <p-calendar [(ngModel)]="newEmployee.dob" id="dob" dateFormat="yy-mm-dd" aria-placeholder=""></p-calendar>
+            <p-calendar [(ngModel)]="newEmployee.dob" class="formCalender" id="dob" dateFormat="yy-mm-dd" aria-placeholder=""></p-calendar>
             <small class="p-error" *ngIf="submitted && !newEmployee.dob">dob is required.</small>
         </div>
         <div class="field">
             <label for="name">Next salary Date</label>
-            <p-calendar [(ngModel)]="newEmployee.nextPayDate" id="nextPay" dateFormat="yy-mm-dd" aria-placeholder=""></p-calendar>
+            <p-calendar [(ngModel)]="newEmployee.nextPayDate" class="formCalender" formCalender id="nextPay" dateFormat="yy-mm-dd" aria-placeholder=""></p-calendar>
             <small class="p-error" *ngIf="submitted && !newEmployee.nextPayDate">Next salary Date is required.</small>
         </div>
 

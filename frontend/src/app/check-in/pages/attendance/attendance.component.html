@@ -1,111 +1,191 @@
 <div>
     <p-toast></p-toast>
+    <div *ngIf="userService.role!=='Admin'" class="d-flex p-2 justify-content-end">
+        <button [routerLink]="['checkin/leaveHistory']" class="btn btn-danger rounded-2">Leave History</button>
+    </div>
     <div class="main-container">
         <div class="checkin-checkout-container">
-        <div class="d-flex flex-column justify-content-center gap-3 pt-5 text-center">
-            <h2 class="align-self-center">CheckIn CheckOut Page</h2>
-            <div class="d-flex justify-content-center">
-                <form [formGroup]="checkDate">
-                    <p-calendar placeholder="Select date for check-in" [maxDate]="maxDateCheckIn" formControlName="checkDate"></p-calendar>
-                </form>
-            </div>
-        </div>
-        <div class="d-flex flex-column">
-            <div class="d-flex justify-content-center align-items-center pt-4"
-                *ngIf="currData!==undefined &&checkDate.value.checkDate!==null && currData!==undefined && currData.date===null">
-                <div class="d-flex flex-column gap-3 checkIn">
-                    <h4>You have not checked-in for the day yet, check-in now?</h4>
-                    <div class="d-flex justify-content-around">
-                        <button class="btn btn-primary" (click)="logAttendance()" >Check In</button>
-                    </div>
+            <div class="d-flex flex-column justify-content-center gap-3 pt-5 text-center">
+                <h2 class="align-self-center">CheckIn CheckOut</h2>
+                <div class="d-flex justify-content-center">
+                    <form [formGroup]="checkDate">
+                        <p-calendar placeholder="Select date for check-in" [maxDate]="maxDateCheckIn"
+                            formControlName="checkDate"></p-calendar>
+                    </form>
                 </div>
             </div>
-            <div class="d-flex justify-content-center align-items-center pt-4">
-                <div *ngIf="currData!==undefined &&currData.checkInTime!==null && currData.checkOutTime==='CheckedIn'">
+            <div class="d-flex flex-column">
+                <div class="d-flex justify-content-center align-items-center pt-4"
+                    *ngIf="currData!==undefined &&checkDate.value.checkDate!==null && currData!==undefined && currData.date===null">
                     <div class="d-flex flex-column gap-3 checkIn">
-                        <h4>You have checked in for the day, checkout? or edit checkout</h4>
-                        <div class="d-flex justify-content-around flex-column gap-3 w-100">
-                            <div class="d-flex flex-column align-items-center gap-3">
-                                <div class="form-floating">
-                                    <input type="time" [(ngModel)]="currData.checkInTime" class="form-control"
-                                        id="floatingPassword" placeholder="Password">
-                                    <label for="floatingPassword">Check-in time</label>
-                                </div>
-                                <div class="d-flex  gap-2">
-                                    <button class="btn btn-primary" (click)="modifyCheckIn()">Update Check-in</button>
-                                    <button class="btn btn-danger" (click)="logCheckOut()"><i
-                                            class="pi pi-sign-out pr-2"></i>Check Out</button>
+                        <h4>You have not checked-in for the day yet, check-in now?</h4>
+                        <div class="d-flex justify-content-around">
+                            <button class="btn btn-primary" (click)="logAttendance()">Check In</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center align-items-center pt-4">
+                    <div
+                        *ngIf="currData!==undefined &&currData.checkInTime!==null && currData.checkOutTime==='CheckedIn'">
+                        <div class="d-flex flex-column gap-3 checkIn">
+                            <h4>You have checked in for the day, checkout? or edit checkout</h4>
+                            <div class="d-flex justify-content-around flex-column gap-3 w-100">
+                                <div class="d-flex flex-column align-items-center gap-3">
+                                    <div class="form-floating">
+                                        <input type="time" [(ngModel)]="currData.checkInTime" class="form-control"
+                                            id="floatingPassword" placeholder="Password">
+                                        <label for="floatingPassword">Check-in time</label>
+                                    </div>
+                                    <div class="d-flex  gap-2">
+                                        <button class="btn btn-primary rounded-1" (click)="modifyCheckIn()">Update
+                                            Check-in</button>
+                                        <button class="btn btn-danger rounded-1"
+                                            [disabled]="currData.checkInTime >=this.getCurrentTime()"
+                                            (click)="logCheckOut()"><i class="pi pi-sign-out pr-2"></i>Check
+                                            Out</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="d-flex justify-content-center align-items-center pt-4">
-                <div *ngIf="currData!==undefined &&currData.checkInTime!==null && currData.checkOutTime!=='CheckedIn'">
-                    <div class="d-flex flex-column gap-3 checkIn">
-                        <h4>You have checked out for the day! Modify Details?</h4>
-                        <div class="d-flex justify-content-around flex-column gap-3">
-                            <div class="d-flex gap-3 justify-content-center">
-                                <div class="form-floating">
-                                    <input type="time" [(ngModel)]="currData.checkInTime" class="form-control"
-                                        id="floatingPassword" placeholder="Check-in time">
-                                    <label for="floatingPassword">Check-in time</label>
+                <div class="d-flex justify-content-center align-items-center pt-4">
+                    <div
+                        *ngIf="currData!==undefined &&currData.checkInTime!==null && currData.checkOutTime!=='CheckedIn'">
+                        <div class="d-flex flex-column gap-3 checkIn">
+                            <h4>You have checked out for the day! Modify Details?</h4>
+                            <div class="d-flex justify-content-around flex-column gap-3">
+                                <div class="d-flex gap-3 justify-content-center">
+                                    <div class="form-floating">
+                                        <input type="time" [(ngModel)]="currData.checkInTime" class="form-control"
+                                            id="floatingPassword" placeholder="Check-in time">
+                                        <label for="floatingPassword">Check-in time</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <input type="time" [(ngModel)]="currData.checkOutTime" class="form-control"
+                                            id="floatingPassword" placeholder="Check-out time">
+                                        <label for="floatingPassword">Check-out time</label>
+                                    </div>
                                 </div>
-                                <div class="form-floating">
-                                    <input type="time" [(ngModel)]="currData.checkOutTime" class="form-control"
-                                        id="floatingPassword" placeholder="Check-out time">
-                                    <label for="floatingPassword">Check-out time</label>
+                                <div class="w-100 d-flex justify-content-center">
+                                    <button class="btn btn-warning w-55 rounded-1 mb-3" (click)="modifyCheckIn()">Update
+                                        Log</button>
                                 </div>
-                            </div>
-                            <div class="w-100 d-flex justify-content-center">
-                                <button class="btn btn-danger w-55" (click)="modifyCheckIn()">Update Log</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div *ngIf="currData!==undefined && currData.checkInTime==='Apply'">
-                <h4>Your leave request is being processed</h4>
-            </div>
-            <div *ngIf="currData!==undefined && currData.checkInTime==='Leave'">
-                <h3>Leave has approved!</h3>
-            </div>
-            <div class="d-flex justify-content-around">
-                <button class="btn btn-danger" (click)="openLeaveForm()">Apply Leave</button>
+                <div *ngIf="currData!==undefined && currData.checkInTime==='Apply'">
+                    <h4>Your leave request is being processed</h4>
+                </div>
+                <div *ngIf="currData!==undefined && currData.checkInTime==='Leave'">
+                    <h3>Leave has approved!</h3>
+                </div>
+                <div *ngIf="userService.role!=='Admin'" class="d-flex justify-content-around">
+                    <button class="btn btn-danger rounded-1" (click)="openLeaveForm()">Apply Leave</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="card-container">
-        <h3 class="card-title">Leave Counts Left</h3>
-        <div class="card-details">
-            <div class="detail-item d-flex justify-content-between p-2">
-              <span class="detail-label">Casual Leave</span>
-              <span class="detail-value">:&nbsp;{{ userLeaveData.casualLeave }}</span>
+        <div class="card-container" *ngIf="userLeaveData!=undefined && userService.role!=='Admin'">
+            <h3 class="card-title">Leave Counts Left</h3>
+            <div class="card-details">
+                <div class="detail-item d-flex justify-content-between p-2">
+                    <span class="detail-label ">Casual Leave</span>
+                    <span class="detail-value">:&nbsp;{{ userLeaveData.casualLeave }}</span>
+                </div>
+                <div class="detail-item d-flex justify-content-between p-2">
+                    <span class="detail-label">Sick Leave</span>
+                    <span class="detail-value">:&nbsp;{{ userLeaveData.sickLeave }}</span>
+                </div>
+                <div class="detail-item d-flex justify-content-between p-2">
+                    <span class="detail-label">Earned Leave:</span>
+                    <span class="detail-value">:&nbsp;{{ userLeaveData.earnedLeave }}</span>
+                </div>
+                <div class="detail-item d-flex justify-content-between p-2">
+                    <span class="detail-label">Total Leaves Left:</span>
+                    <span class="detail-value">:&nbsp;{{userLeaveData.casualLeave+userLeaveData.sickLeave+
+                        userLeaveData.earnedLeave }}</span>
+                </div>
             </div>
-            <div class="detail-item d-flex justify-content-between p-2">
-              <span class="detail-label">Sick Leave</span>
-              <span class="detail-value">:&nbsp;{{ userLeaveData.sickLeave }}</span>
-            </div>
-            <div class="detail-item d-flex justify-content-between p-2">
-              <span class="detail-label">Earned Leave:</span>
-              <span class="detail-value">:&nbsp;{{ userLeaveData.earnedLeave }}</span>
-            </div>
-            <div class="detail-item d-flex justify-content-between p-2">
-              <span class="detail-label">Total Leaves Left:</span>
-              <span class="detail-value">:&nbsp;{{userLeaveData.casualLeave+userLeaveData.sickLeave+ userLeaveData.earnedLeave }}</span>
-            </div>
+        </div>
+        <div class="card" *ngIf="allLeaveApplications.length > 0">
+            <p-table
+                #dt2
+                [value]="allLeaveApplications"
+                dataKey="id"
+                [rows]="10"
+                [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [paginator]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [globalFilterFields]="['userName']"
+                [tableStyle]="{ 'width': '40rem' }"
+                >
+                <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <span class="p-input-icon-left ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt2.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr >
+                        <th class="text-center" style="width:5%">UserName</th>
+                        <th class="text-center" style="width:15%">Range</th>
+                        <th class="text-center" style="width:15%">Reason</th>
+                        <th class="text-center" style="width:7%">Leave Type</th>
+                        <th class="text-center" style="width:8%">Action</th>
+                    </tr>
+                    
+                </ng-template>
+                <ng-template pTemplate="body" let-application>
+                    <tr>
+                        <td class="text-center">
+                            {{ application.userName }}
+                        </td>
+                        <!-- <td>
+                            {{application.leaveFrom + ' - '+application.leaveTo}}
+                        </td> -->
+                        <td>
+                           <div class="d-flex flex-column gap-2 text-center">
+                            <p class="m-0">{{application.leaveFrom}}</p>
+                            <p class="m-0">TO</p>
+                            <p class="m-0">{{application.leaveTo}}</p>
+                           </div>
+                        </td>
+                        <td class="text-center">
+                            {{application.reason}}
+                        </td>
+                        <td class="text-center">
+                            {{application.leaveType}}
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1 justify-content-center">
+                                <button (click)="approveLeave(application)" class="btn btn-success rounded-2"><i class="pi pi-check-circle"></i></button>
+                                <button (click)="rejectApplication(application)" class="btn btn-danger rounded-2"><i class="pi pi-times-circle"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="5">No customers found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </div>
         
     </div>
-    </div>
-    <p-dialog [(visible)]="leaveForm" [style]="{width:'450px', height:'70vh'}" header="Leave Form" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="leaveForm" [style]="{width:'450px', height:'75vh'}" header="Leave Form" [modal]="true"
+        styleClass="p-fluid">
         <ng-template pTemplate="content">
             <div class="field">
                 <label for="inventoryStatus">Leave Type</label>
                 <p-dropdown [(ngModel)]="leaveFormData.leaveType" inputId="leaveType" [options]="leaveType">
                     <ng-template pTemplate="selectedItem">
-                        <p-tag [value]="leaveFormData.leaveType.toUpperCase()" [severity]="getSeverity(leaveFormData.leaveType.toUpperCase())"></p-tag>
+                        <p-tag [value]="leaveFormData.leaveType.toUpperCase()"
+                            [severity]="getSeverity(leaveFormData.leaveType.toUpperCase())"></p-tag>
                     </ng-template>
                     <ng-template let-option pTemplate="item">
                         <p-tag [value]="option.label" [severity]="getSeverity(option.label)"></p-tag>
@@ -114,24 +194,30 @@
             </div>
             <div class="field">
                 <label for="startDate">Start Date</label>
-                <p-calendar class="formCalender" p-calendar-w-btn placeholder="Start date" formControlName="leaveFrom" [styleClass]="'custom-height'" [inputStyle]="{'width':'10px'}"></p-calendar>
+                <p-calendar class="formCalender" p-calendar-w-btn placeholder="Start date"
+                    [styleClass]="'custom-height'" [inputStyle]="{'width':'10px'}"
+                    [(ngModel)]="leaveFormData.leaveFrom" [minDate]="minDate"></p-calendar>
                 <!-- <small class="p-error" *ngIf="submitted && !leaveFormData.leaveFrom">From date is required.</small> -->
             </div>
             <div class="field">
-                <label for="toDate">User Name</label>
+                <label for="toDate">End Date</label>
                 <div style="height: 20px;">
-                <p-calendar class="formCalender" styleClass="formCalender" placeholder="Start date" formControlName="leaveFrom"></p-calendar>
+                    <p-calendar class="formCalender" styleClass="formCalender" placeholder="Start date"
+                        [(ngModel)]="leaveFormData.leaveTo" [minDate]="leaveFormData.leaveFrom"></p-calendar>
                 </div>
                 <!-- <small class="p-error" *ngIf="submitted && !leaveFormData.leaveTo">To Date is required.</small> -->
             </div>
             <div class="field pt-5">
                 <label for="description">Description</label>
-                <textarea id="description" pInputTextarea [(ngModel)]="leaveFormData.reason" required rows="2" cols="20"></textarea>
+                <textarea id="description" pInputTextarea [(ngModel)]="leaveFormData.reason" required rows="2"
+                    cols="20"></textarea>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-            <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="applyForLeave()"></button>
+            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+                (click)="hideDialog()"></button>
+            <button pButton pRipple label="Apply" icon="pi pi-check" class="p-button-text"
+                (click)="applyForLeave()"></button>
         </ng-template>
     </p-dialog>
 </div>

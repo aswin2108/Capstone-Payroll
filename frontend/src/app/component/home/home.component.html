@@ -17,7 +17,15 @@
                 </div>
             </div>
         </a>
-        <a routerLink="/checkin" class="card--container--link" [ngClass]="{'empHome':'userService.role===Employee'}">
+        <a *ngIf="userService.role!=='Admin'" routerLink="/checkin" class="card--container--link" [ngClass]="{'empHome':'userService.role===Employee'}">
+            <div class="home--card--container border3 d-flex align-items-center justify-content-center">
+                <div class="p-3 d-flex flex-column card--title">
+                    <i class="pi pi-check-circle color3 h1 d-flex "></i>
+                    <h3 class="color3">Check In</h3>
+                </div>
+            </div>
+        </a>
+        <a *ngIf="userService.role==='Admin'" routerLink="/checkin" class="card--container--link" [ngClass]="{'empHome':'userService.role===Employee'}">
             <div class="home--card--container border3 d-flex align-items-center justify-content-center">
                 <div class="p-3 d-flex flex-column card--title">
                     <i class="pi pi-check-circle color3 h1 d-flex "></i>
@@ -37,7 +45,7 @@
                 </div>
             </div>
         </a>
-        <a routerLink="/manageEmployees" class="card--container--link" *ngIf="userService.role !=='HR'">
+        <a routerLink="/analysis" class="card--container--link" *ngIf="userService.role !=='HR'">
             <div class="home--card--container border4 d-flex align-items-center justify-content-center">
                 <div class="p-3 d-flex flex-column card--title">
                     <i class="pi pi-chart-line color4 h1 d-flex "></i>
@@ -45,7 +53,7 @@
                 </div>
             </div>
         </a>
-        <a routerLink="salary" class="card--container--link" *ngIf="userService.role !=='HR'">
+        <a routerLink="/audit" class="card--container--link" *ngIf="userService.role !=='HR'">
             <div class="home--card--container border5 d-flex align-items-center justify-content-center">
                 <div class="p-3 d-flex flex-column card--title">
                     <i class="pi pi-book color5 h1 d-flex "></i>

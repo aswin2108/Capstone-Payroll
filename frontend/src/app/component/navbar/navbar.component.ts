@@ -7,58 +7,45 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
   userName: string;
   role: string;
   items: MenuItem[];
-  display:string;
+  display: string;
 
-  constructor(private userService: UserService, private route:Router) {
+  constructor(private userService: UserService, private route: Router) {
     this.initializeValues();
-    this.userService.userChange.subscribe((data)=>{
-      // this.initializeValues();
-      this.userName=data[0];
-      this.role=data[1];
-      this.display=this.userName+" ("+this.role+")";
-      console.log("hai"+data);
-    })
+    this.userService.userChange.subscribe((data) => {
+      this.userName = data[0];
+      this.role = data[1];
+      this.display = this.userName + ' (' + this.role + ')';
+    });
   }
 
   ngOnInit(): void {
-    // this.initializeValues();
-    
+
     this.items = [
       {
-        label:'',
+        label: '',
         icon: 'pi pi-user',
         items: [
           {
             label: 'Logout',
             command: (event) => {
               this.logoutFunction();
-            }
+            },
           },
-        ]
-      }
+        ],
+      },
     ];
   }
 
-  initializeValues(){
+  initializeValues() {
     this.userName = this.userService.userName;
     this.role = this.userService.role;
-    
-    console.log(this.userName," haoii");
-    
   }
-
-  dashboardFunction() {
-    // Function logic for the Dashboard item
-    console.log('Dashboard clicked');
-  }
-
-  
 
   logoutFunction() {
     this.userService.logOut();

@@ -40,7 +40,7 @@ namespace PayRollProject.Controllers
             RecurringJob.AddOrUpdate(nameof(_jobService.CreditSalaries), () => JobService.CreditSalaries(_userDetailsService, _salaryCreditService,  _userRepository, _salaryCreditRepository), "0 12 21 * *");
             RecurringJob.AddOrUpdate(nameof(_jobService.CreditSalaries), () => JobService.CreditSalaries(_userDetailsService, _salaryCreditService, _userRepository, _salaryCreditRepository), "0 12 L * *");
 
-            BackgroundJob.Schedule(() => JobService.CreditSalaries(_userDetailsService, _salaryCreditService, _userRepository, _salaryCreditRepository), TimeSpan.FromSeconds(5));
+            BackgroundJob.Schedule(() => JobService.CreditSalaries(_userDetailsService, _salaryCreditService, _userRepository, _salaryCreditRepository), TimeSpan.FromSeconds(1));
 
             return Ok("Salary crediting job scheduled successfully");
         }

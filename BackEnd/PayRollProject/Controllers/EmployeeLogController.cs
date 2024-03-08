@@ -19,7 +19,7 @@ namespace PayRollProject.Controllers
         }
 
         [HttpGet("{UserName}/{Date}")]
-        //[Authorize(Policy = "AdminHrEmployee")]
+        [Authorize(Roles = "Admin, HR, Employee")]
         public IActionResult GetAttendanceByDateAndUserName(string Date, string UserName)
         {
             Console.WriteLine(Date + " " + UserName);
@@ -27,7 +27,7 @@ namespace PayRollProject.Controllers
             return Ok(Attendance);
         }
 
-       // [Authorize(Policy = "AdminHrEmployee")]
+        [Authorize(Roles = "Admin, HR, Employee")]
         [HttpPut("updateCheckTime")]
         public IActionResult UpdateAttendance([FromBody] EmployeeLog Attendance)
         {
@@ -35,7 +35,7 @@ namespace PayRollProject.Controllers
             return Ok();
         }
 
-       // [Authorize(Policy = "AdminHrEmployee")]
+        [Authorize(Roles = "Admin, HR, Employee")]
         [HttpPost("{UserName}/{date}/{CheckInTime}")]
         public IActionResult InsertAttendance(string UserName, string CheckInTime, string date)
         {

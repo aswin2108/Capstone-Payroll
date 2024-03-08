@@ -7,9 +7,11 @@ using PayRollProject.Repository;
 using PayRollProject.Repository.Interface;
 using PayRollProject.Repository.Interfaces;
 using PayRollProject.Services;
+using sib_api_v3_sdk.Client;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 
@@ -19,9 +21,10 @@ var building = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json");
 IConfigurationRoot config = building.Build();
-string secretKey = config.GetSection("AppSettings:SecretKey").Value;
+string secretKey = config.GetSection("AppSettings:SecretKey").Value!;
 //var config = builder.Configuration;
 
+//Configuration.Default.ApiKey.Add("api-key", builder.Configuration["BrevoApi:ApiKey"]);
 
 
 builder.Services.AddScoped<IUserDetailsRepository, UserRepository>();
@@ -30,7 +33,9 @@ builder.Services.AddScoped<IEmployeeLogRepository, EmployeeLogRepository>();
 builder.Services.AddScoped<ISalaryCreditRepository, SalaryCreditRepository>();
 builder.Services.AddScoped<ILeaveRecordsRepository, LeaveRecordsRepository>();
 builder.Services.AddScoped<IAuthCredRepository, AuthCredRepository>();
+builder.Services.AddScoped<IAuditRepository, AuditRepository>();
 
+builder.Services.AddScoped<AuditServices>();
 builder.Services.AddScoped<SalaryCreditService>();
 builder.Services.AddScoped<UserDetailsService>();
 builder.Services.AddScoped<UserRepository>();
@@ -44,6 +49,8 @@ builder.Services.AddTransient<SalaryCreditService>();
 builder.Services.AddTransient<JobService>();
 builder.Services.AddTransient<LeaveRecordsService>();
 builder.Services.AddTransient<AuthCredService>();
+
+
 builder.Services.AddSwaggerGen();
 builder.Services.AddHangfire((sp, config) =>
 {

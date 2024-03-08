@@ -1,8 +1,13 @@
 @import "primeicons/primeicons.css";
+@import "./../../../../node_modules//ngx-spinner//animations/ball-scale-multiple.css";
 
 .nav-container {
     border-bottom: 1px solid #898686;
 }
 .title{
     font-size: 40px;
+}
+.homeLink{
+    text-decoration: none;
+    color: inherit;
 }

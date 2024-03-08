@@ -12,6 +12,7 @@ import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import * as FileSaver from 'file-saver';
+import { UserService } from 'src/app/shared/userServiceService/user.service';
 
 @Component({
   selector: 'app-display-employee',
@@ -23,7 +24,7 @@ export class DisplayEmployeeComponent implements OnInit {
   constructor(
     private displayEmplyeeService: DisplayEmployeeService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService, public userService:UserService
   ) {
     this.getEmployeeData();
   }
@@ -75,6 +76,9 @@ export class DisplayEmployeeComponent implements OnInit {
           .deleteEmployee(employeeData.userName)
           .subscribe({
             next: () => {
+              console.log('haii');
+              
+              this.displayEmplyeeService.logAudit(employeeData,3,1);
               employeeData = null;
               this.fetchAllEmployees();
               this.messageService.add({
@@ -85,6 +89,7 @@ export class DisplayEmployeeComponent implements OnInit {
               });
             },
             error: (error) => {
+              this.displayEmplyeeService.logAudit(this.newEmployee,3,0);
               console.log(error);
               this.messageService.add({
                 severity: 'danger',
@@ -141,6 +146,7 @@ export class DisplayEmployeeComponent implements OnInit {
         this.selectedEmployes.forEach((emp) => {
           this.displayEmplyeeService.deleteEmployee(emp.userName).subscribe({
             next: () => {
+              this.displayEmplyeeService.logAudit(emp,3,1);
               this.selectedEmployes = null;
               this.fetchAllEmployees();
               this.messageService.add({
@@ -151,6 +157,7 @@ export class DisplayEmployeeComponent implements OnInit {
               });
             },
             error: (error: HttpErrorResponse) => {
+              this.displayEmplyeeService.logAudit(emp,3,0);
               console.log(error);
               this.messageService.add({
                 severity: 'danger',
@@ -191,20 +198,39 @@ export class DisplayEmployeeComponent implements OnInit {
 
   createEmployee() {
     this.submitted = true;
-    this.newEmployAuth.userName = this.newEmployee.userName;
     this.newEmployAuth.role =
-      this.newEmployee.role === 'Admin'
-        ? 2
-        : this.newEmployee.role === 'HR'
-        ? 1
-        : 0;
+    this.newEmployee.role === 'Admin'
+    ? 2
+    : this.newEmployee.role === 'HR'
+    ? 1
+    : 0;
+    
+    if(this.newEmployee.role.toUpperCase()==='ADMIN'){
+      this.newEmployee.userName='A'+this.newEmployee.userName.toLowerCase();
+    }
+    else if(this.newEmployee.role.toUpperCase()==='HR'){
+      this.newEmployee.userName='H'+this.newEmployee.userName.toLowerCase();
+    }
+    else{
+      this.newEmployee.userName='E'+this.newEmployee.userName.toLowerCase();
+    }
+    this.newEmployAuth.userName = this.newEmployee.userName;
     this.displayEmplyeeService.createAuthNewEmp(this.newEmployAuth).subscribe({
       next: (response) => {
         console.log(response);
       },
       error: (error: HttpErrorResponse) => {
         console.log(error);
-        if (error.status === 200)
+        if(error.error.text==='User Exist'){
+          this.displayEmplyeeService.logAudit(this.newEmployee,1,0);
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Unsuccessfull',
+            detail: 'UserName already exists',
+            life: 3000,
+          });
+        }
+        else if (error.status === 200)
           this.displayEmplyeeService
             .createEmployee(this.newEmployee)
             .subscribe({
@@ -213,33 +239,42 @@ export class DisplayEmployeeComponent implements OnInit {
                 // this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Employee Deleted', life: 3000 });
               },
               error: (error: HttpErrorResponse) => {
+                this.displayEmplyeeService.logAudit(this.newEmployee,1,1);
                 console.log(error);
-                if (error.status === 200) this.fetchAllEmployees();
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Successful',
-                  detail: 'Employee Added',
-                  life: 3000,
-                });
+                if (error.status === 200){ 
+                  this.fetchAllEmployees();
+                  this.displayEmplyeeService.createLeaveData(this.newEmployee.userName);
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'Employee Added',
+                    life: 3000,
+                  });
+                }
                 this.hideDialog();
               },
             });
       },
     });
   }
+
   saveEditEmployee() {
     this.submitted = true;
+    console.log();
+    
     this.displayEmplyeeService.editExistingUser(this.newEmployee).subscribe({
       next: (response) => {
+        this.displayEmplyeeService.logAudit(this.newEmployee,2,1);
         this.fetchAllEmployees();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Employee Added',
-            life: 3000,
-          });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Successful',
+          detail: 'Employee Details Modified',
+          life: 3000,
+        });
       },
       error: (error: HttpErrorResponse) => {
+        this.displayEmplyeeService.logAudit(this.newEmployee,2,0);
         console.log(error);
       },
       complete:()=>{
@@ -279,6 +314,7 @@ handleFileUpload(event: Event) {
 processCsvData(csvData: string) {
   const rows = csvData.split('\n');
   const employeeArray: EmployeeDetails[] = [];
+  
   console.log('csv process started');
   
 
@@ -288,6 +324,8 @@ processCsvData(csvData: string) {
       
       if (values.length === 18) {
           const employee: EmployeeDetails = new EmployeeDetails();
+          const employAuth: AthTableData = new AthTableData();
+
           this.newEmployee=new EmployeeDetails();
           this.newEmployAuth=new AthTableData();
           employee.userName = values[0].trim();
@@ -307,14 +345,16 @@ processCsvData(csvData: string) {
           employee.payFreq = +values[14].trim();
           employee.overTime = +values[15].trim();
           employee.role = values[16].trim();
-          this.newEmployAuth.password=values[17].trim();
+
+          employAuth.password=values[17].trim();
+          employAuth.userName = employee.userName;
           employeeArray.push(employee);
 
           // Call the post request function for each employee 
           
           this.newEmployee=employee;
 
-          this.createEmployee();
+          this.createEmployeeByValue(employee,employAuth);
       } else {
           console.log("Invalid row data");
       }
@@ -322,4 +362,68 @@ processCsvData(csvData: string) {
 
   console.log(employeeArray); // Use this array for further processing if needed
 }
+
+   
+createEmployeeByValue(employee, employeeAuth) {
+    this.submitted = true;
+    employeeAuth.role =
+    employee.role === 'Admin'
+    ? 2
+    : employee.role === 'HR'
+    ? 1
+    : 0;
+    
+    if(employee.role.toUpperCase()==='ADMIN'){
+      employee.userName='A'+employee.userName.toLowerCase();
+    }
+    else if(employee.role.toUpperCase()==='HR'){
+      employee.userName='H'+employee.userName.toLowerCase();
+    }
+    else{
+      employee.userName='E'+employee.userName.toLowerCase();
+    }
+    employeeAuth.userName = employee.userName;
+    this.displayEmplyeeService.createAuthNewEmp(employeeAuth).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log(error);
+        if(error.error.text==='User Exist'){
+          this.displayEmplyeeService.logAudit(this.newEmployee,1,0);
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Unsuccessfull',
+            detail: 'UserName already exists',
+            life: 3000,
+          });
+        }
+        else if (error.status === 200)
+          this.displayEmplyeeService
+            .createEmployee(employee)
+            .subscribe({
+              next: (response) => {
+                // this.fetchAllEmployees();
+                // this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Employee Deleted', life: 3000 });
+              },
+              error: (error: HttpErrorResponse) => {
+                this.displayEmplyeeService.logAudit(employee,1,1);
+                console.log(error);
+                if (error.status === 200){ 
+                  this.fetchAllEmployees();
+                  this.displayEmplyeeService.createLeaveData(employee.userName);
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'Employee Added',
+                    life: 3000,
+                  });
+                }
+                this.hideDialog();
+              },
+            });
+      },
+    });
+  }
+  
 }

@@ -259,7 +259,8 @@ namespace PayRollProject.Repository
                                       Phone = @Phone, 
                                       Salary = @Salary, 
                                       TaxPercent = @TaxPercent,  
-                                      PayFreq = @PayFreq
+                                      PayFreq = @PayFreq,
+                                      Bonus = @Bonus
                                  WHERE UserName = @UserName";
 
                     using (SqlCommand command = new SqlCommand(updateQuery, connection))
@@ -374,7 +375,7 @@ namespace PayRollProject.Repository
             {
                 using (SqlConnection connection = new SqlConnection(cstr))
                 {
-                    string query = @"UPDATE Users SET OverTime = 0, Bonus = 0 voidWHERE UserName = @UserName";
+                    string query = @"UPDATE Users SET OverTime = 0, Bonus = 0 WHERE UserName = @UserName";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@UserName", UserName);

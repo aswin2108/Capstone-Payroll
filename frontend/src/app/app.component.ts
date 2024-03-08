@@ -11,10 +11,5 @@ export class AppComponent implements OnInit {
   constructor(private userService:UserService, private router: Router){}
   ngOnInit(): void {
       const token=localStorage.getItem('jwtToken');
-      const isTokenExpired=this.userService.isTokenExpired(token);
-
-      if(token && !isTokenExpired){
-        this.router.navigate(['/home']);
-      }
   }
 }

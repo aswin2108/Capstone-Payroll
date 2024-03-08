@@ -16,12 +16,14 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { LeaveHistoryComponent } from './pages/leave-history/leave-history.component';
 
 
 @NgModule({
   declarations: [
     CheckInComponent,
-    AttendanceComponent
+    AttendanceComponent,
+    LeaveHistoryComponent,
   ],
   imports: [
     CommonModule,

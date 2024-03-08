@@ -5,6 +5,8 @@ import { jwtDecode } from 'jwt-decode';
 import { JWTToken } from '../model/JWT';
 import { Subject } from 'rxjs';
 import { AthTableData, EmployeeDetails } from '../model/EmployeeDetails';
+import { Audit } from '../model/Audit';
+import { LeaveCount } from '../model/LeaveData';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,8 @@ export class DisplayEmployeeService {
   constructor(private userService:UserService, private http:HttpClient) { }
 
   allEmployee$: Subject<EmployeeDetails[]> = new Subject<EmployeeDetails[]>();
+  auditDetails:Audit=new Audit();
+  newLeaveEntry:LeaveCount=new LeaveCount();
 
   getAllEmployeeDetails(){
     this.http
@@ -35,8 +39,22 @@ export class DisplayEmployeeService {
         },
       });
   }
+  getEmpData(){
+    return this.http.get<EmployeeDetails[]>('https://localhost:7125/api/Users/allUsers',
+    {});
+  }
+
+  deleteAuthData( userName:string){
+    this.http.delete<any>(`https://localhost:7125/api/AuthCred/deleteAuth/${userName}`, {}).subscribe({
+      next:()=>{
+        console.log('authDeleted');
+        
+      }
+    })
+  }
 
   deleteEmployee(userName:string){
+    this.deleteAuthData(userName);
     return this.http.delete(`https://localhost:7125/api/Users/user/delete?userName=${userName}`);
   }
 
@@ -45,7 +63,7 @@ export class DisplayEmployeeService {
     const date = new Date(dateString);
     // Format the date into "yyyy-mm-dd" format
     const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
 }
@@ -57,20 +75,19 @@ export class DisplayEmployeeService {
     employeeData.dob=this.formatDate(employeeData.dob);
     employeeData.nextPayDate=this.formatDate(employeeData.nextPayDate);
     return this.http.post<any>('https://localhost:7125/api/Users/add-user-details', employeeData);
-    // console.log(employeeData);
-    //  this.http
-    //   .post<any>(
-    //     'https://localhost:7125/api/Users/add-user-details',
-    //     employeeData
-    //   ).subscribe({
-    //     next:(response)=>{
-    //       console.log('Employee added');
-    //     },
-    //     error:(error: HttpErrorResponse)=>{
-    //       console.log(error);
-          
-    //     }
-    //   })
+  }
+
+  createLeaveData(userName:string){
+    this.newLeaveEntry.userName=userName;
+    this.newLeaveEntry.casualLeave=10;
+    this.newLeaveEntry.earnedLeave=10.
+    this.newLeaveEntry.sickLeave=10;
+     this.http.post<any>('https://localhost:7125/api/Leave/addLeave',this.newLeaveEntry).subscribe({
+      next:(response)=>{
+        console.log('leave created');
+        
+      }
+     })
   }
 
   createAuthNewEmp(employeeAuth:AthTableData){
@@ -78,20 +95,50 @@ export class DisplayEmployeeService {
     return this.http.post<any>('https://localhost:7125/api/AuthCred/createUser', employeeAuth);
   }
 
+  logAudit(empDetails:EmployeeDetails, operation:number, result:number){
+    this.auditDetails.operatedOn=empDetails.userName;
+    this.auditDetails.excecutedAt=this.formatCurrentDateTime();
+    this.auditDetails.userName=this.userService.userName;
+    this.auditDetails.result=(result==1?'SUCCESS':'FAIL');
+    this.auditDetails.operation=(operation==1?'CREATED':operation===2?'EDIT':'DELETE');
+
+    console.log(empDetails);
+    
+    this.http.post<Audit>(`https://localhost:7125/api/Audit/createAudit`,this.auditDetails).subscribe({
+      next:()=>{
+        console.log('Audit logged');
+        
+      },
+      error:(error:HttpErrorResponse)=>{
+        console.log(error);
+        
+      }
+    })
+  }
+
   editExistingUser(newData:EmployeeDetails){
     newData.dob=this.formatDate(newData.dob);
     newData.nextPayDate=this.formatDate(newData.nextPayDate);
     console.log(EmployeeDetails);
     return this.http.put<any>('https://localhost:7125/api/Users/userDetails/edit', newData);
-    
-    // this.http.put<any>('https://localhost:7125/api/Users/userDetails/edit', newData).subscribe({
-    //   next:(response)=>{
-    //     console.log("User Updated");
-    //   },
-    //   error:(error:HttpErrorResponse)=>{
-    //     console.log(error);
-    //   }
-    // })
   }
+
+  padTo2Digits(num) {
+    return num.toString().padStart(2, '0');
+   }
+   
+  formatCurrentDateTime():string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = this.padTo2Digits(now.getMonth() + 1);
+    const day = this.padTo2Digits(now.getDate());
+    const hours = this.padTo2Digits(now.getHours());
+    const minutes = this.padTo2Digits(now.getMinutes());
+    const seconds = this.padTo2Digits(now.getSeconds());
+   
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+   }
+
+
 
 }

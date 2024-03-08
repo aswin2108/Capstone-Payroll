@@ -13,3 +13,20 @@ export class LeaveForm{
     flag: number;
     leaveType:string;
 }
+
+export class LeaveFormAPI{
+    userName:string;
+    leaveFrom:string;
+    leaveTo:string;
+    reason:string;
+    flag: number;
+    leaveType:number;
+}
+
+export class LeaveApp{
+    userName:string;
+    leaveFrom:string;
+    leaveTo:string;
+    leaveType:number;
+    reason:string;
+}

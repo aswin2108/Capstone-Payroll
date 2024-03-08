@@ -19,10 +19,10 @@ namespace PayRollProject.Repository
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@UserName", leaveRecord.UserName);
-                        command.Parameters.AddWithValue("@FromDate", leaveRecord.LeaveFrom.ToString("yyyy-MM-dd"));
-                        command.Parameters.AddWithValue("@ToDate", leaveRecord.LeaveTo.ToString("yyyy-MM-dd"));
+                        command.Parameters.AddWithValue("@FromDate", leaveRecord.LeaveFrom);
+                        command.Parameters.AddWithValue("@ToDate", leaveRecord.LeaveTo);
                         command.Parameters.AddWithValue("@Reason", leaveRecord.Reason);
-                        //command.Parameters.AddWithValue("@Flag", leaveRecord.Flag);
+                        command.Parameters.AddWithValue("@Flag", 0);
                         command.Parameters.AddWithValue("@LeaveType", leaveRecord.LeaveType);
                         connection.Open();
                         command.ExecuteNonQuery();
@@ -37,7 +37,7 @@ namespace PayRollProject.Repository
             }
         }
 
-        public List<LeaveRecord> GetUnapprovedLeaveRequests()
+        public List<LeaveRecord> GetUnapprovedLeaveRequests(string empType)
         {
             List<LeaveRecord> unapprovedLeaves = new List<LeaveRecord>();
 
@@ -45,19 +45,20 @@ namespace PayRollProject.Repository
             {
                 using (SqlConnection connection = new SqlConnection(cstr))
                 {
-                    string query = @"SELECT * FROM LeaveRecords WHERE Flag = 0";
+                    string query = @"SELECT * FROM LeaveRecords WHERE Flag = 0 AND UserName LIKE @EmpTypePattern";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
+                        command.Parameters.AddWithValue("@EmpTypePattern", empType + "%");
                         connection.Open();
                         SqlDataReader reader = command.ExecuteReader();
                         while (reader.Read())
                         {
                             LeaveRecord leaveRecord = new LeaveRecord();
                             leaveRecord.UserName = reader["UserName"].ToString();
-                            leaveRecord.LeaveFrom = DateOnly.FromDateTime((DateTime)reader["LeaveFrom"]);
-                            leaveRecord.LeaveTo = DateOnly.FromDateTime((DateTime)reader["LeaveTo"]);
+                            leaveRecord.LeaveFrom = reader["LeaveFrom"].ToString();
+                            leaveRecord.LeaveTo = reader["LeaveTo"].ToString();
                             leaveRecord.Reason = reader["Reason"].ToString();
-                            leaveRecord.Flag = Convert.ToBoolean(reader["Flag"]);
+                            leaveRecord.Flag = Convert.ToInt32(reader["Flag"]);
                             leaveRecord.LeaveType = Convert.ToInt32(reader["LeaveType"]);
                             unapprovedLeaves.Add(leaveRecord);
                         }
@@ -72,16 +73,18 @@ namespace PayRollProject.Repository
             return unapprovedLeaves;
         }
 
-        public void ApproveLeaveRequest(string UserName)
+        public void ApproveLeaveRequest(string UserName, string FromDate, int Flag)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(cstr))
                 {
-                    string query = @"UPDATE LeaveRecords SET Flag = 1 WHERE UserName = @UserName";
+                    string query = @"UPDATE LeaveRecords SET Flag = @Flag WHERE UserName = @UserName AND LeaveFrom=@FromDate";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@UserName", UserName);
+                        command.Parameters.AddWithValue("@FromDate", FromDate);
+                        command.Parameters.AddWithValue("@Flag", Flag);
                         connection.Open();
                         int rowsAffected = command.ExecuteNonQuery();
                         if (rowsAffected == 0)
@@ -148,7 +151,7 @@ namespace PayRollProject.Repository
             {
                 using (SqlConnection connection = new SqlConnection(cstr))
                 {
-                    string query = @"SELECT * FROM LeaveRecords WHERE UserName = @UserName AND Flag = 1";
+                    string query = @"SELECT * FROM LeaveRecords WHERE UserName = @UserName";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@UserName", UserName);
@@ -158,10 +161,10 @@ namespace PayRollProject.Repository
                         {
                             LeaveRecord leaveRecord = new LeaveRecord();
                             leaveRecord.UserName = reader["UserName"].ToString();
-                            leaveRecord.LeaveFrom = DateOnly.FromDateTime((DateTime)reader["LeaveFrom"]);
-                            leaveRecord.LeaveTo = DateOnly.FromDateTime((DateTime)reader["LeaveTo"]);
+                            leaveRecord.LeaveFrom = reader["LeaveFrom"].ToString();
+                            leaveRecord.LeaveTo = reader["LeaveTo"].ToString();
                             leaveRecord.Reason = reader["Reason"].ToString();
-                            leaveRecord.Flag = Convert.ToBoolean(reader["Flag"]);
+                            leaveRecord.Flag = Convert.ToInt32(reader["Flag"]);
                             leaveRecord.LeaveType = Convert.ToInt32(reader["LeaveType"]);
                             approvedLeaves.Add(leaveRecord);
                         }

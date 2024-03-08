@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { SalaryRoutingModule } from './salary-routing.module';
 import { SalaryComponent } from './salary.component';
-import { UserService } from '../shared/userServiceService/user.service';
-import { HttpClient } from '@angular/common/http';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';

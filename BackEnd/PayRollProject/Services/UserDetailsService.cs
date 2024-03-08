@@ -75,6 +75,10 @@ namespace PayRollProject.Services
         public void UpdateOvertimeToZero(string UserName)
         {
             _userDetailsRepository.UpdateOvertimeToZero(UserName);
+        } 
+        public void UpdateOvertimeToZeroJobs(string UserName, UserRepository userRepository)
+        {
+            userRepository.UpdateOvertimeToZero(UserName);
         }
 
         public int calculateNewTax(int overTime, int salary, int newExcemptionAmt)

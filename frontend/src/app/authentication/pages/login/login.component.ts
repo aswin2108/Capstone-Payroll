@@ -38,43 +38,24 @@ export class LoginComponent implements OnInit {
     this.loading=true;
     this.loginService.loginAuthentication(this.loginForm.value).subscribe({
       next: (response) => {
-        console.log(response);
-        // if (typeof response === 'object') {
-        //   response = JSON.stringify(response); // Convert the response object to JSON string
-        // }
         const decoded: JWTToken = jwtDecode(response);
         this.userService.tokenDetails = decoded;
         this.userService.userName=decoded.unique_name;
         this.userService.role=decoded.role;
         this.userService.userChange.next([this.userService.userName, this.userService.role]);
         localStorage.setItem('jwtToken', response);
-        this.router.navigate(['/home']);
-        console.log(decoded);
-        // this.userChange.next();
-        if(response){
-          console.log("token exist");
-
-          
-        }
-        else{
-          console.log("no token");
-          
-        }
-        
+        this.router.navigate(['../../home']);
       },
       error: (error: HttpErrorResponse) => {
         if (error.status === 401) {
-          // Handle unauthorized response
           console.log('Unauthorized');
           alert('userName or password is wrong');
-          // Perform appropriate actions such as displaying an error message or redirecting to the login page
         } else {
-          // Handle other error cases
           console.error('An error occurred:', error.error.message);
         }
       },
       complete: () => {
-        
+        this.router.navigate(['/home']);
       },
     });
     

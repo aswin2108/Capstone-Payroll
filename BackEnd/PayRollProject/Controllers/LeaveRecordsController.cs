@@ -17,7 +17,8 @@ namespace PayRollProject.Controllers
         }
 
         [HttpPost("leaveSubmission")]
-        [Authorize(Policy = "AdminHrEmployee")]
+        [Authorize(Roles = "HR, Employee")]
+        //[Authorize(Policy = "AdminHrEmployee")]
         public IActionResult SubmitLeaveRequest([FromBody] LeaveRecord leaveRecord)
         {
             try
@@ -33,32 +34,32 @@ namespace PayRollProject.Controllers
 
         }
 
-        [HttpGet("unapprovedLeave")]
-        [Authorize(Policy = "AdminOnly")]
-        public IActionResult GetUnapprovedLeaveRequests()
+        [HttpGet("unapprovedLeave/{empType}")]
+        [Authorize(Roles = "Admin, HR")]
+        public IActionResult GetUnapprovedLeaveRequests(string empType)
         {
-            List<LeaveRecord>unapprovedList=_leaveRecordsService.GetUnapprovedLeaveRequests();
+            List<LeaveRecord>unapprovedList=_leaveRecordsService.GetUnapprovedLeaveRequests(empType);
             return Ok(unapprovedList);
         }
 
-        [HttpPut("approveLeave")]
-        [Authorize(Policy = "AdminOnly")]
-        public IActionResult ApproveLeaveRequest(string UserName)
+        [HttpPut("approveLeave/{UserName}/{FromDate}/{Flag}")]
+        [Authorize(Roles = "Admin, HR")]
+        public IActionResult ApproveLeaveRequest(string UserName, string FromDate, int Flag)
         {
-            _leaveRecordsService.ApproveLeaveRequest(UserName);
+            _leaveRecordsService.ApproveLeaveRequest(UserName, FromDate, Flag);
             return Ok();
         }
 
         [HttpDelete("rejectLeave")]
-        [Authorize(Policy = "AdminOnly")]
+        [Authorize(Roles = "Admin, HR")]
         public IActionResult DeleteLeaveRequest(string UserName)
         {
             _leaveRecordsService.DeleteLeaveRequest(UserName);
             return Ok();
         }
 
-        [HttpGet("approvedLeaves")]
-        [Authorize(Policy = "AdminHrEmployee")]
+        [HttpGet("approvedLeaves/{UserName}")]
+        [Authorize(Roles = "Admin, HR, Employee")]
         public IActionResult GetUserApprovedLeaveRequests(string UserName)
         {
             List<LeaveRecord>approvedList =_leaveRecordsService.GetUserApprovedLeaveRequests(UserName);

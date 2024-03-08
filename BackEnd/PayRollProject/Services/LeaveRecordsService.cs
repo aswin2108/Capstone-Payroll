@@ -16,14 +16,14 @@ namespace PayRollProject.Services
             _leaveRecordsRepository.SubmitLeaveRequest(leaveRecord);
             return;
         }
-        public List<LeaveRecord> GetUnapprovedLeaveRequests()
+        public List<LeaveRecord> GetUnapprovedLeaveRequests(string empType)
         {
-            return _leaveRecordsRepository.GetUnapprovedLeaveRequests();
+            return _leaveRecordsRepository.GetUnapprovedLeaveRequests(empType);
         }
 
-        public void ApproveLeaveRequest(string UserName)
+        public void ApproveLeaveRequest(string UserName, string FromDate, int Flag)
         {
-            _leaveRecordsRepository.ApproveLeaveRequest(UserName);
+            _leaveRecordsRepository.ApproveLeaveRequest(UserName, FromDate, Flag);
             return;
         }
         public void DeleteLeaveRequest(string UserName)

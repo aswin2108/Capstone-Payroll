@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  min-height: 87vh;
+  min-height: 78vh;
   flex-direction: row-reverse;
 }
 
@@ -33,7 +33,7 @@ input[type="time"] {
 
   .label-position{
     position: relative;
-  left: -100px; /* Adjust the value as needed */
+  left: -100px; 
   margin-right: 10px; 
   }
 
@@ -43,8 +43,6 @@ input[type="time"] {
     border-radius: 4px;
     padding: 15px;
     max-width: 300px;
-    // margin: 0 auto;
-    // margin-left: 10%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
   }
@@ -65,13 +63,6 @@ input[type="time"] {
     margin-bottom: 5px;
   }
 
-
-  // :host ::ng-deep .p-datepicker {
-  //   font-size: 12px; /* Adjust the font-size as desired */
-  //   width: 10px; /* Adjust the width as desired */
-  //   height: 20px;
-  // }
-
   .formCalender{
     ::ng-deep .p-datepicker table td {
       padding: 0.1rem !important;
@@ -90,37 +81,13 @@ input[type="time"] {
     ::ng-deep .p-datepicker .p-datepicker-header {
       padding: 0.1rem;
     }
-    // width: 100px;
   }
-  // .p-calendar .p-datepicker{
-  //   min-width: none !important;
-  //   min-width: 30px !important;
-  // }
-  // .p-datepicker .p-datepicker-calendar-container {
-  //   width: 10px; /* Adjust the width as desired */
-  //   height: 10px; /* Adjust the height as desired */
-  // }
-  
-  // .p-datepicker .p-datepicker-calendar {
-  //   width: 10%;
-  //   height: 10%;
-  // }
 
-  // .p-calendar{
-  //   width: 400px !important;
-  // }
-
-  // .p-datepicker{
-  //   width: 400px !important;
-  // }
-  // :host .p-inputwrapper .p-datepicker .p-datepicker-calendar {
-  //   min-width: unset !important;
-  // }
   ::ng-deep .p-datepicker table td {
-    padding: 2px; // Adjust as per your requirement
+    padding: 2px; 
   }
   body .p-datepicker table td {
-    padding: 2px; // Adjust as per your requirement
+    padding: 2px; 
   }
   :host ::ng-deep .p-inputtextarea {
     width: 100%;

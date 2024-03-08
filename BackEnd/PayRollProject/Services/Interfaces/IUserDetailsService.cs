@@ -19,6 +19,7 @@ namespace PayRollProject.Services.Interfaces
 
         public List<UserDetails> GetEmployeesToCreditSalaries(DateTime CurrentDate, UserRepository userRepository);
         public List<UserDetails> GetUsersByDate(DateTime date);
+        public void UpdateOvertimeToZeroJobs(string UserName, UserRepository userRepository);
         public void UpdateOvertimeToZero(string UserName);
     }
 }

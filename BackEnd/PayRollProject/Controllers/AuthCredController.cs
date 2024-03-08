@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using System.IdentityModel.Tokens.Jwt;
 using PayRollProject.Models;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace PayRollProject.Controllers
@@ -34,13 +35,22 @@ namespace PayRollProject.Controllers
             return Ok(JsonSerializer.Serialize(token)); // Convert token to JSON string
 
         }
-        
+
+        [Authorize(Roles = "Admin, HR")]
         [HttpPost("createUser")]
         public IActionResult InsertUser([FromBody] NewAuth newUser )
         {
             string status=_authCredService.InsertUser(newUser.UserName, newUser.Password, newUser.Role);
             return Ok(status);
         }
-        
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("deleteAuth/{UserName}")]
+        public IActionResult DeleteUserDetails(string UserName) { 
+              _authCredService.DeleteUserDetails(UserName);
+            return Ok();
+        }
+
+
     }
 }

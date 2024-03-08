@@ -35,10 +35,23 @@ namespace PayRollProject.Services
             return null;
         }
 
+        public bool UserExist(string UserName)
+        {
+            AuthCred auth=_authCredRepository.GetUserDetails(UserName);
+            if(auth.UserName == null) return false;
+            else return true;
+        }
+
+        public void DeleteUserDetails(string UserName)
+        {
+            _authCredRepository.GetUserDetails(UserName);
+            return;
+        }
+
         public string InsertUser(string UserName, string Password, int Role) 
         {
             AuthCred authCred = new AuthCred();
-            if(GetUserDetails(UserName, Password)!=null)
+            if(UserExist(UserName))
             {
                 return "User Exist";
             }

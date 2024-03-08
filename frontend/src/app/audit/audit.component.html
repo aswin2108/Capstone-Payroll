@@ -1,0 +1,40 @@
+<div class="card p-3">
+    <p-table [value]="allAuditEntries" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="caption">
+            <div class="d-flex justify-content-between">
+                <h2>Audit History</h2>
+                <p-button icon="pi pi-refresh" (click)="getAllAudit()"></p-button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center">User Name</th>
+                <th class="text-center">Action</th>
+                <th class="text-center">Date & Time of Action</th>
+                <th class="text-center">Performed On</th>
+                <th class="text-center">Status</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-log>
+            <tr>
+                <td class="text-center">{{log.userName}}</td>
+                <td class="text-center"><p-tag [value]="log.operation"
+                        [severity]="getSeverityOperator(log.operation)"></p-tag></td>
+
+                <td class="text-center">
+                    <div class="applicationReason">{{log.excecutedAt}}</div>
+                </td>
+                <td class="text-center">
+                    <div class="applicationReason">{{log.operatedOn}}</div>
+                </td>
+                <td class="text-center"><p-tag [value]="log.result" [severity]="getSeverityStatus(log.result)"></p-tag>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                {{allAuditEntries ? allAuditEntries.length : 0 }} Operations were done in the past.
+            </div>
+        </ng-template>
+    </p-table>
+</div>

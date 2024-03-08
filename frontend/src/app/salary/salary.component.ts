@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
   providers: [DatePipe]
 })
 export class SalaryComponent implements OnInit {
-  // datePipe: any;
   constructor(private salaryService: SalaryService,private router: Router) { }
 
   allSalaryHistory:Salary[];
@@ -33,7 +32,7 @@ export class SalaryComponent implements OnInit {
           this.allSalaryHistory=response;
           this.allSalaryHistory = response.map(salary => ({
             ...salary,
-            creditDate: new Date(salary.creditDate) // Convert string to Date
+            creditDate: new Date(salary.creditDate) 
           }));
           console.log(this.allSalaryHistory);
         },

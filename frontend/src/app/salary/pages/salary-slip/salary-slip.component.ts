@@ -20,16 +20,22 @@ export class SalarySlipComponent implements OnInit {
   constructor(private salaryService: SalaryService) {}
 
   salaryData: Salary;
+  taxPercent:string;
 
   ngOnInit(): void {
     this.salaryData = this.salaryService.transferData();
+    this.taxPercent=((this.salaryData.taxCut*100)/(this.salaryData.taxCut+this.salaryData.creditAmount)).toFixed(2);
+    if(this.taxPercent>'30')this.taxPercent='30';
+    console.log(this.taxPercent);
+    console.log(this.salaryData);
+    
   }
 
   downloadAsPDF() {
     const doc = new jsPDF();
     const element = document.querySelector('#pdfTable') as HTMLElement;
 
-    html2canvas(element, { scale: 2 }) // Adjust scale if needed for better quality
+    html2canvas(element, { scale: 2 }) 
       .then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const imgWidth = doc.internal.pageSize.getWidth();
